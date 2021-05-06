@@ -1,0 +1,3 @@
+[console_scripts]
+itikz = holoviews_functions.cli:main
+
