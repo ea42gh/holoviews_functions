@@ -78,3 +78,30 @@ def stem(data, curve=True, marker=True):
     if curve:  hs = hs * hv.Curve((x,y)).opts(line_width=0.8)
     return hs
 # ===========================================================================
+def jittered_points(data, jitter=0.05, shade=True, shader_opts=dict(cmap="blues")):
+    '''given (x_vals[N], y_meas[NumExperiments, N], apply a jitter to the x values
+       and possible datashade the resulting scatter plot'''
+    
+    from holoviews.operation.datashader import datashade
+    x_vals, y_meas    = data
+    NumExperiments,N  = y_meas.shape
+
+    x_jitter  = np.random.uniform(low=-jitter, high=jitter, size=(N*NumExperiments))
+    h_scatter = hv.Scatter( ( np.repeat(x_vals, NumExperiments)+x_jitter, y_meas.T.flatten() ))
+    if shade: h_scatter = datashade(h_scatter, **shader_opts)
+    return h_scatter
+# ---------------------------------------------------------------------------
+def regression_lines_spread(data, meas_stats, estim_stats):
+    '''given (x_vals[N], y_vals[NumExperiments, N], return hv.Spread overlaid with jittered values'''
+
+    x_vals, y_meas           = data
+    y_meas_ave,  y_meas_std  = meas_stats
+    y_estim_ave, y_estim_std = estim_stats
+
+    NumExperiments,N  = y_meas.shape
+
+    h_spread_pts  = hv.Spread((x_vals, y_estim_ave, y_estim_std))*\
+                    hv.Spread((x_vals, y_meas_ave,  y_meas_std))*\
+                    hv.Curve( (x_vals, y_estim_ave))
+    return h_spread_pts
+
