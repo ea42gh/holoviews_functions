@@ -67,3 +67,14 @@ def forest_plot( df = dict( mean    = np.array( [2.0, 4.0, 6.0,   8.0 ]),
 
     return h.opts(specs).redim.range(parameter=(-.5,len(df['mean'])-.5),value=rng).relabel('%d%% Credible Intervals'%int(100.*support))
 # ===========================================================================
+def stem(data, curve=True, marker=True):
+    '''stem plot:   data=(x,y,e)'''
+    x,y,e=data
+    vlines = [ np.array( [[x[i], y[i]], [x[i], e[i]]]) for i in range(len(x)) ]
+
+    hs = hv.Path( vlines ).opts( show_legend=True, muted_alpha=0.)
+
+    if marker: hs = hs * hv.Scatter((x,e)).opts(size=4)
+    if curve:  hs = hs * hv.Curve((x,y)).opts(line_width=0.8)
+    return hs
+# ===========================================================================

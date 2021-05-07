@@ -47,7 +47,7 @@ def ngon_ring(x=0, y=0, specs=[(1,1),(.9,.9)], arc=(0,2*np.pi), orientation=0, n
 # ----------------------------------------------------------------------------
 def ngon(x=0,y=0, spec=(1,1), orientation=0., arc=(0,2*np.pi), npoints=40,\
          line_color='k', line_alpha=1., color='k', alpha=0., label=''):
-    ''' an ngon ''
+    ''' an ngon '''
     e = ngon_data(x,y,specs=[spec], arc=arc,orientation=orientation,npoints=npoints)
 
     return hv.Polygons(e, label=label).opts( line_color=line_color,line_alpha=line_alpha, color=color, alpha=alpha)
