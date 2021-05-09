@@ -67,6 +67,18 @@ def forest_plot( df = dict( mean    = np.array( [2.0, 4.0, 6.0,   8.0 ]),
 
     return h.opts(specs).redim.range(parameter=(-.5,len(df['mean'])-.5),value=rng).relabel('%d%% Credible Intervals'%int(100.*support))
 # ===========================================================================
+def vertical_lines(x,y1,y2):
+    vlines = [ np.array( [[x[i], y1[i]], [x[i], y2[i]]]) for i in range(len(y1)) ]
+    return hv.Path( vlines ).opts( show_legend=True, muted_alpha=0.)
+# ---------------------------------------------------------------------------
+def horizontal_lines( x1,x2,y):
+    hlines = [ np.array( [[x1[i], y[i]], [x2[i], y[i]]]) for i in range(len(x1)) ]
+    return hv.Path( hlines ).opts( show_legend=True, muted_alpha=0.)
+# ---------------------------------------------------------------------------
+def oblique_lines( x1,y1, x2,y2):
+    hlines = [ np.array( [[x1[i], y1[i]], [x2[i], y2[i]]]) for i in range(len(x1)) ]
+    return hv.Path( hlines ).opts( show_legend=True, muted_alpha=0.)
+# ---------------------------------------------------------------------------
 def stem(data, curve=True, marker=True):
     '''stem plot:   data=(x,y,e)'''
     x,y,e=data
